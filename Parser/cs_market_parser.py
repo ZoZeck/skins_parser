@@ -11,7 +11,7 @@ while True:
         for el in item:
             title = el.select('.name')
             price = el.select('.price')
-            mas = print(f'{page} page{title[0].text}{price[0].text} rubles')
+            mas = print(f'\n{page} page\n{title[0].text}\n{price[0].text} rubles\n')
         page += 1
     else:
         break
