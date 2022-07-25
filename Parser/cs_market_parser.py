@@ -3,6 +3,7 @@ import json
 from bs4 import BeautifulSoup as BS
 from urllib.parse import unquote
 from collections import OrderedDict
+import lxml.html
 
 
 class MarketCSGOObject:
@@ -22,10 +23,13 @@ class MarketCSGOObject:
 def main():
     page = 0
     skins_list = dict()
-    while page < 10:
+    max_pages = 200
+    while page < max_pages:
         r = requests.get(f'https://market.csgo.com/?t=all&p={page}&sd=desc')
         html = BS(r.content, 'html.parser')
         item = html.select('.market-items > .item')[:56]
+        tree_tm = lxml.html.document_fromstring(r.text)
+        max_pages = int(tree_tm.xpath('//*[@id="total_pages"]')[0].text)
         if (len(item)):
             for el in item:
                 link = el.get('href')
